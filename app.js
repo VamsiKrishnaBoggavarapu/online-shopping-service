@@ -1,4 +1,5 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 import authRoute from './routes/authRoute.js';
 import userRoute from './routes/userRoute.js';
@@ -8,6 +9,7 @@ config({ path: './config.env' });
 
 /* Middleware Define */
 app.use(express.json());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 /* Routes Define */
 app.use('/api/v1/auth', authRoute);

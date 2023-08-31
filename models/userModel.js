@@ -6,7 +6,7 @@ const userSchema = new Schema(
   {
     firstname: {
       type: String,
-      require: [true, 'Firstname is required.'],
+      required: [true, 'Firstname is required.'],
       validate: {
         validator: (val) => new RegExp(RegExp_Alpha_Space).test(val),
         message: 'Firstname allow only alphabates.',
@@ -16,7 +16,7 @@ const userSchema = new Schema(
     },
     lastname: {
       type: String,
-      require: [true, 'Lastname is required.'],
+      required: [true, 'Lastname is required.'],
       validate: {
         validator: (val) => new RegExp(RegExp_Alpha_Space).test(val),
         message: 'Lastname allow only alphabates.',
@@ -26,7 +26,7 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      require: [true, 'Emailid is required.'],
+      required: [true, 'Emailid is required.'],
       unique: true,
       validate: {
         validator: (val) => new RegExp(RexExp_Email).test(val),
@@ -35,14 +35,14 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      require: [true, 'Password is required.'],
+      required: [true, 'Password is required.'],
       minlength: [6, 'Password having minium 6 charactors.'],
       maxlength: [12, 'Password having maxium 12 charactors.'],
       select: false,
     },
     confirmPassword: {
       type: String,
-      require: [true, 'Confirm password is required.'],
+      required: [true, 'Confirm password is required.'],
       validate: {
         validator: function (confPsw) {
           return confPsw === this.password;
@@ -52,11 +52,11 @@ const userSchema = new Schema(
     },
     dob: {
       type: Date,
-      require: [true, 'DOB is required.'],
+      required: [true, 'DOB is required.'],
     },
     gender: {
       type: String,
-      require: [true, 'Gender is required.'],
+      required: [true, 'Gender is required.'],
       enum: {
         values: ['male', 'female', 'others'],
         message: 'Gender should be male or female or others.',
@@ -82,6 +82,10 @@ const userSchema = new Schema(
     },
     passwordResetToken: {
       type: String,
+      select: false,
+    },
+    __v: {
+      type: Number,
       select: false,
     },
   },
