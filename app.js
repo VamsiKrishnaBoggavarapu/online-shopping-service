@@ -22,6 +22,7 @@ app.use((err, req, res, next) => {
       status: 'failure',
       statusCode: '99',
       message: err?.message || 'Please try again, Something went wrong!',
+      stack: err?.stack,
     },
   });
   next();

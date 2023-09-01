@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 
 export const encryptValue = async (value) => await bcrypt.hash(value, 10);
@@ -13,3 +14,5 @@ export const jwtTokenGeneration = (id) => {
 
   return jwt.sign(payload, secret, options);
 };
+
+export const randomKey = () => crypto.randomBytes(32).toString('hex');

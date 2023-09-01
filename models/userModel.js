@@ -84,6 +84,10 @@ const userSchema = new Schema(
       type: String,
       select: false,
     },
+    passwordResetTokenExpireIn: {
+      type: Date,
+      select: false,
+    },
     __v: {
       type: Number,
       select: false,
@@ -103,6 +107,7 @@ const userSchema = new Schema(
 );
 
 userSchema.pre('save', async function () {
+  if (!this.password) return;
   this.password = await encryptValue(this.password);
   this.confirmPassword = undefined;
 });

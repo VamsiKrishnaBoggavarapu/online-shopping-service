@@ -24,6 +24,14 @@
 
 ## Forgot Password
 
+**1.** Verify the UserName.
+
+**2.** Create a new reset password token.
+
+**3.** Create a email.
+
+**4.** Send the email with reset password link.
+
 ## Reset Password
 
 ## Change Password
