@@ -8,6 +8,7 @@ import {
   randomKey,
 } from '../utils/security.js';
 import { sendEmailTemplate } from '../utils/email.js';
+import User from '../models/userModel.js';
 
 export const signup = catchError(async (req, res, next) => {
   const { firstname, lastname, email, password, confirmPassword, dob, gender } =
@@ -96,7 +97,7 @@ export const forgotPassword = catchError(async (req, res, next) => {
   }
 
   const resetToken = randomKey();
-  const encryptedResetToken = await encryptValue(resetToken);
+  const encryptedResetToken = encryptValue(resetToken);
 
   user.passwordResetToken = encryptedResetToken;
   user.passwordResetTokenExpireIn = Date.now() + 10 * 60 * 1000;
@@ -125,6 +126,41 @@ export const forgotPassword = catchError(async (req, res, next) => {
       statusCode: '00',
       message:
         'Sent a email with reset password link. Please check your email and reset your password.',
+    },
+    resetPasswordLink,
+  });
+});
+
+export const resetPassword = catchError(async (req, res, next) => {
+  const { resetToken, password, confirmPassword } = req.body;
+  if (!resetToken) {
+    throw createHttpError.Unauthorized('Invalid token. Please try again.');
+  }
+  const encryptedResetToken = encryptValue(resetToken);
+  const user = await User.findOne({
+    passwordResetToken: encryptedResetToken,
+    passwordResetTokenExpireIn: { $gt: Date.now() },
+  });
+  if (!user) {
+    throw createHttpError.Unauthorized(
+      'Reset password token is expired or invaild. Please try again.'
+    );
+  }
+  if (!password || !confirmPassword) {
+    throw createHttpError.NotFound('Invalid password. Please try again.');
+  }
+  user.password = password;
+  user.confirmPassword = confirmPassword;
+  user.passwordChangedAt = Date.now();
+  user.passwordResetToken = undefined;
+  user.passwordResetTokenExpireIn = undefined;
+  const updatedUser = await user.save();
+
+  res.status(200).json({
+    errorInfo: {
+      statusCode: '00',
+      status: 'success',
+      message: 'Your password is chnaged. Please login again.',
     },
   });
 });

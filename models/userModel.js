@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { RegExp_Alpha_Space, RexExp_Email } from '../utils/globalConst.js';
-import { encryptValue } from '../utils/security.js';
+import { highlyEncryptValue } from '../utils/security.js';
 
 const userSchema = new Schema(
   {
@@ -108,7 +108,7 @@ const userSchema = new Schema(
 
 userSchema.pre('save', async function () {
   if (!this.password) return;
-  this.password = await encryptValue(this.password);
+  this.password = await highlyEncryptValue(this.password);
   this.confirmPassword = undefined;
 });
 

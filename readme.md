@@ -34,4 +34,10 @@
 
 ## Reset Password
 
+**1.** Verify the Reset Token.
+
+**2.** Verifty the password and confirm password.
+
+**3.** Update the passwords.
+
 ## Change Password

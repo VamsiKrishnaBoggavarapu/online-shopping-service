@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 
-export const encryptValue = async (value) => await bcrypt.hash(value, 10);
+export const highlyEncryptValue = async (value) => await bcrypt.hash(value, 10);
 
 export const compareEncryptedValue = async (normalValue, encryptedValue) =>
   await bcrypt.compare(normalValue, encryptedValue);
@@ -16,3 +16,6 @@ export const jwtTokenGeneration = (id) => {
 };
 
 export const randomKey = () => crypto.randomBytes(32).toString('hex');
+
+export const encryptValue = (value) =>
+  crypto.createHash('sha256').update(value).digest('hex');
